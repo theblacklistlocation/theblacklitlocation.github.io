@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title></title>
+ (style URL)
+    
+    <script src='https://api.mapbox.com/mapbox-gl-js/v0.44.2/mapbox-gl.js'></script>
+<link href='https://api.mapbox.com/mapbox-gl-js/v0.44.2/mapbox-gl.css' rel='stylesheet' />
+
+    <style>
+        body { margin:0; padding:0; }
+        #map { position:absolute; top:0; bottom:0; width:100%; background-color:  }
+    </style>
+    
+</head>
+    
+<body>
+     
+    <style>
+#map {
+    position: fixed;
+    width:50%;
+}
+#features {
+    width: 50%;
+    margin-left: 50%;
+    font-family:monospace;
+    overflow-y: scroll;
+    background-color: #fafafa;
+}
+section {
+    padding:  25px 50px;
+    line-height: 25px;
+    border-bottom: 1px solid #ddd;
+    opacity: 0.25;
+    font-size: 13px;
+}
+        
+        #h2{
+            font-family: monospace;
+        }
+section.active {
+    opacity: 1;
+}
+section:last-child {
+    border-bottom: none;
+    margin-bottom: 200px;
+}
+</style>
+
+<div id='map'></div>
+<div id='features'>
+    <section id='Fort Wadsworth' class='active'>
+        <h2>Fort Wadsworth.</h2>
+        <img src="fort%20wadsworth%202.jpg" width=90%; height=90%;>
+        <img src="fort%20wadsworth%203.jpg" width=90%; height=90%;>
+        <p>The climax of the 14th episode involved a shoot out between the FBI and the Russian mafia at the awesome-looking Fort Wadsworth on Staten Island. Its military roots date to the 1660s and prior to closing in 1994, it was possibly the longest continually-manned military installation in the country. Its most prominent feature is Battery Weed, which was completed in 1861. When it was decommissioned, it was  transferred  to the Park Service and is now open to the public
+        The fort earned its current name in 1864, named after fallen Brigadier General James Wadsworth, who died during the “Battle of The Wilderness” during the Civil War. Until 1997 the Fort has been used as the site for the United States Chaplin School, the headquarters for the New York Naval Station and in fictional universes the Headquarters for G.I Joe.
+        Currently the Fort is used as the starting point of the annual NYC Marathon and the end point for the 5 Boro Bike Tour.</p>
+    </section>
+    <section id='Tiffany and co'>
+        <h2>Tiffany And Co Jewelry Store</h2>
+        <img src="tiffany%20and%20co.jpg" width=80%; height=80%;>
+        <img src="phone%20booth.jpg" width="80%;" height="80%;">
+        <p>In the final moments of the tenth episode Anslo Garrick (No. 16), James Spader’s character Red Reddington calls agent Elizabeth Keen (whom some suspect is his daughter) to bid her farewell. Red makes this call on a completely fictional phone booth outside of the famous Tiffany & Co. Jewelry store on 727 Fifth Avenue.
+        Founded in 1837 by Charles Lewis Tiffany and John B. Young, the jewelry emporium has been a Fifth Avenue staple since 194o. The flagship store has been featured in such films as Sweet Home Alabama and the Audrey Hepburn timeless classic Breakfast At Tiffany’s..</p>
+    </section>
+    <section id='madison park'>
+        <h2>Madison Square park</h2>
+        <img src="madison%20square%20park%202.jpg" width="80%;" height="80%;">
+        <img src=madison%20square%20park.jpg width="80%;" height="80%;">
+        <p>During the 19th episode Red and Liz are watching Tom, who had called in sick to his teaching job. He spends some time “reading” a newspaper in Madison Square Park. Of course, this park is known by many as the place they will more than likely die of heat exhaustion, because of the egregiously long summer lines at the park’s Shack Shack rather than the fact that it was once a burial ground.
+        Besides possibly hour long wait for burgers, the park is known to feature art installations year round, including a Water Tower Installation That Inspires Hope."</p>
+    </section>
+    <section id='yonkers station'>
+        <h2>Yonkers Train Station</h2>
+        <img src=yonkers%20train%20station.jpg width="80%;" height="80%;">
+        <img src=yonkers%20train%20station%202.jpg width="80%;" height="80%;">
+        <p>Toward the end of the 15th episode Red meets with Cowboy, a private bounty hunter. Their encounter takes place outside the Yonkers Metro North Station. Built in 1911, the building was designed by Warren and Wetmore, one of the firms responsible for the look of Grand Central. Like Grand Central, the Station features Gustavino tiling and is the only station that services stations north and west of the Albany.
+        Take a look at these great photographs of the Yonkers Train Station and read acomparison between the Yonkers Train Station and Grand Central.</p>
+    </section>
+    
+</div>
+<script>
+    
+mapboxgl.accessToken = 'pk.eyJ1IjoicGV0ZXJzZW44IiwiYSI6ImNqZmpmb3U0bjJxd20zNHBmaXl3b3Q3dmUifQ.LBuRBQghC0E3e87qDc1x1Q';
+
+var map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/petersen8/cjfl8o073hc4y2rnvw5f61do5',
+    center: [-74.057880, 40.600899],
+    zoom: 15.5,
+    bearing: 27,
+    pitch: 45
+});
+
+var chapters = {
+    'Fort Wadsworth': {
+        bearing: 27,
+        center: [-74.057880, 40.600899],
+        zoom: 15.5,
+        pitch: 20
+    },
+    'Tiffany and co': {
+        duration: 6000,
+        center: [-73.973878, 40.762707],
+        bearing: 150,
+        zoom: 18,
+        pitch: 0
+    },
+    'madison park': {
+        bearing: 90,
+        center: [-73.988132, 40.741931],
+        zoom: 17,
+        speed: 0.6,
+        pitch: 5
+    },
+    'yonkers station': {
+        bearing: 90,
+        center: [-73.902360, 40.935607],
+        zoom: 19
+    },
+   
+};
+
+// On every scroll event, check which element is on screen
+window.onscroll = function() {
+    var chapterNames = Object.keys(chapters);
+    for (var i = 0; i < chapterNames.length; i++) {
+        var chapterName = chapterNames[i];
+        if (isElementOnScreen(chapterName)) {
+            setActiveChapter(chapterName);
+            break;
+        }
+    }
+};
+
+var activeChapterName = 'Fort Wadsworth';
+function setActiveChapter(chapterName) {
+    if (chapterName === activeChapterName) return;
+
+    map.flyTo(chapters[chapterName]);
+
+    document.getElementById(chapterName).setAttribute('class', 'active');
+    document.getElementById(activeChapterName).setAttribute('class', '');
+
+    activeChapterName = chapterName;
+}
+
+function isElementOnScreen(id) {
+    var element = document.getElementById(id);
+    var bounds = element.getBoundingClientRect();
+    return bounds.top < window.innerHeight && bounds.bottom > 0;
+}
+
+</script>
+    
+</body>
+</html>
